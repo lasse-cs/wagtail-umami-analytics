@@ -1,0 +1,139 @@
+{% extends 'wagtailadmin/base.html' %}
+
+{% load i18n wagtailadmin_tags %}
+
+{% block titletag %}
+    Analytics
+{% endblock titletag %}
+
+{% block content %}
+    {% include 'wagtailadmin/shared/header.html' with title="Analytics" icon="desktop" %}
+
+    <div class="nice-padding">
+        {% if site_switcher %}
+            <form class="w-mb-8" method="get" id="analytics-site-switch" novalidate>
+                <label for="{{ site_switcher.site.id_for_label }}">
+                    {% trans "Site" %}:
+                </label>
+                {{ site_switcher.site }}
+            </form>
+        {% endif %}
+
+        {% if not umami_configured %}
+            <p>Analytics is not configured for {{ site.hostname }}.</p>
+        {% else %}
+            <section
+                class="w-summary loading-mask"
+                data-controller="content-loader analytics-summary"
+                data-content-loader-url-value="{% url 'analytics:stats' site.pk %}"
+                data-content-loader-loading-class="loading"
+                data-action="content-loader:loaded->analytics-summary#updateStats content-loader:failed->analytics-summary#onFailure"
+            >
+                <h2 class="w-sr-only">Summary Statistics</h2>
+                <ul class="w-summary__list">
+                    <li data-controller="content-loader"
+                        data-content-loader-url-value="{% url 'analytics:active_users' site.pk %}"
+                        data-content-loader-loading-class="loading"
+                        data-action="content-loader:loaded->analytics-summary#updateActiveUsers:stop"
+                    >
+                        {% icon name="user" title="Active Users" %}
+                        <span>
+                            <span data-analytics-summary-target="activeUsers">-</span> active users
+                        </span>
+                    </li>
+                    <li>
+                        {% icon name="view" title="Page Views" %}
+                        <span>
+                            <span data-analytics-summary-target="pageviews">-</span> page views
+                        </span>
+                    </li>
+                    <li>
+                        {% icon name="login" title="Visits" %}
+                        <span>
+                            <span data-analytics-summary-target="visits">-</span> visits
+                        </span>
+                    </li>
+                    <li>
+                        {% icon name="group" title="Visitors" %}
+                        <span>
+                            <span data-analytics-summary-target="visitors">-</span> visitors
+                        </span>
+                    </li>
+                    <li>
+                        {% icon name="link-external" title="Bounces" %}
+                        <span>
+                            <span data-analytics-summary-target="bounces">-</span> bounces
+                        </span>
+                    </li>
+                </ul>
+            </section>
+            <section class="loading-mask"
+                     data-controller="content-loader analytics-metrics"
+                     data-content-loader-url-value="{% url 'analytics:metrics' site.pk %}"
+                     data-content-loader-loading-class="loading"
+                     data-action="content-loader:loaded->analytics-metrics#updateMetrics content-loader:failed->analytics-metrics#onFailure"
+            >
+                <h2>Metrics</h2>
+                <div style="display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 16rem;">
+                        <h3>Paths</h3>
+                        <table class="listing">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Path
+                                    </th>
+                                    <th>
+                                        Visits
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody data-analytics-metrics-target="pathsTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="flex: 1; min-width: 16rem;">
+                        <h3>Referrers</h3>
+                        <table class="listing">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Referrer
+                                    </th>
+                                    <th>
+                                        Count
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody data-analytics-metrics-target="referrersTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="flex: 1; min-width: 16rem;">
+                        <h3>Countries</h3>
+                        <table class="listing">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Country
+                                    </th>
+                                    <th>
+                                        Count
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody data-analytics-metrics-target="countriesTableBody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        {% endif %}
+    </div>
+{% endblock content %}
+
+{% block extra_js %}
+    <script src="{% versioned_static 'wagtail_umami_analytics/js/controllers/content_loader_controller.js' %}"></script>
+    <script src="{% versioned_static 'wagtail_umami_analytics/js/controllers/analytics_summary_controller.js' %}"></script>
+    <script src="{% versioned_static 'wagtail_umami_analytics/js/controllers/analytics_metrics_controller.js' %}"></script>
+{% endblock extra_js %}

@@ -1,0 +1,32 @@
+[project]
+name = "wagtail-umami-analytics"
+version = "0.1.0"
+description = "Umami Analytics Dashboard for Wagtail"
+readme = "README.md"
+authors = [
+    { name = "lasse-cs" }
+]
+requires-python = ">=3.10"
+dependencies = [
+    "django>=5.2",
+    "requests>=2.11.1,<3.0",
+    "wagtail>=7.0",
+]
+
+[build-system]
+requires = ["uv_build>=0.11.8,<0.12.0"]
+build-backend = "uv_build"
+
+[dependency-groups]
+dev = [
+    "pytest>=9.0.3",
+    "pytest-django>=4.12.0",
+    "responses>=0.26.1",
+    "time-machine>=3.2.0",
+    "wagtail-factories>=4.4.0",
+]
+
+[tool.pytest.ini_options]
+pythonpath = [".", "src"]
+DJANGO_SETTINGS_MODULE = "tests.settings"
+python_files = ["test_*.py"]
