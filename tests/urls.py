@@ -10,5 +10,5 @@ analytics_viewset = UmamiAnalyticsViewSet()
 
 urlpatterns = [
     path("admin/", include(wagtailadmin_urls)),
-    path("", include(wagtail_urls))
+    path("", include(wagtail_urls)),
 ]

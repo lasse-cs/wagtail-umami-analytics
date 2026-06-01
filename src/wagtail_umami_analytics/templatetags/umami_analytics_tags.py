@@ -16,7 +16,9 @@ def umami_analytics_tracker(context):
     if context.get("is_pattern_library", False):
         return ""
     try:
-        analytics_settings = UmamiAnalyticsSetting.for_request(request=context["request"])
+        analytics_settings = UmamiAnalyticsSetting.for_request(
+            request=context["request"]
+        )
     except Exception:
         return ""
     umami_host = getattr(settings, "UMAMI_HOST", None)

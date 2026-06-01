@@ -1,6 +1,8 @@
 import pytest
 
-from wagtail_umami_analytics.templatetags.umami_analytics_tags import umami_analytics_tracker
+from wagtail_umami_analytics.templatetags.umami_analytics_tags import (
+    umami_analytics_tracker,
+)
 
 from .factories import UmamiAnalyticsSettingFactory
 
@@ -9,6 +11,7 @@ pytestmark = [
     pytest.mark.django_db,
     pytest.mark.usefixtures("register_viewset", "register_setting"),
 ]
+
 
 def test_valid_analytics(site, website_id, settings, rf):
     settings.UMAMI_HOST = "http://localhost:3000/"

@@ -8,7 +8,6 @@ USE_TZ = True
 TIME_ZONE = "UTC"
 
 
-
 INSTALLED_APPS = [
     "django.contrib.admin",
     "django.contrib.auth",
@@ -56,7 +55,7 @@ STATIC_URL = "/static/"
 
 WAGTAILADMIN_BASE_URL = "http://localhost"
 
-UMAMI_HOST="http://localhost"
+UMAMI_HOST = "http://localhost"
 UMAMI_API_BASE = "http://localhost"
 UMAMI_API_KEY = "test-key"
 

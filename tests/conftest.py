@@ -16,7 +16,9 @@ from wagtail_umami_analytics.views import UmamiAnalyticsViewSet
 
 @pytest.fixture(scope="session")
 def register_viewset():
-    with hooks.register_temporarily("register_admin_viewset", lambda: UmamiAnalyticsViewSet()):
+    with hooks.register_temporarily(
+        "register_admin_viewset", lambda: UmamiAnalyticsViewSet()
+    ):
         yield
 
 
@@ -39,6 +41,7 @@ def site():
 
     yield SiteFactory(is_default_site=True)
 
+
 @pytest.fixture
 def umami_api_base():
     return "https://test.umami.is/api/"
@@ -59,10 +62,12 @@ def umami_client(umami_api_base, website_id):
     with UmamiClient(umami_api_base, website_id=website_id) as client:
         yield client
 
+
 @pytest.fixture
 def umami_api_client(umami_client, umami_api_key):
     umami_client.set_api_key(umami_api_key)
     yield umami_client
+
 
 @pytest.fixture
 def configured_umami_settings(settings, umami_api_base, umami_api_key):

@@ -16,8 +16,11 @@ from .factories import UmamiAnalyticsSettingFactory
 
 pytestmark = [
     pytest.mark.django_db,
-    pytest.mark.usefixtures("register_viewset", "register_setting", "configured_umami_settings"),
+    pytest.mark.usefixtures(
+        "register_viewset", "register_setting", "configured_umami_settings"
+    ),
 ]
+
 
 def _time_range_query_params(now: datetime) -> dict[str, str]:
     return {
@@ -91,9 +94,7 @@ def test_active_users_returns_503_when_umami_fails(
 
 
 @responses.activate
-def test_active_users_uses_selected_site_settings(
-    admin_client, site, umami_api_base
-):
+def test_active_users_uses_selected_site_settings(admin_client, site, umami_api_base):
     other_site = SiteFactory(hostname="other.example.com", is_default_site=False)
     UmamiAnalyticsSettingFactory(site=site, umami_id="default_website_id")
     UmamiAnalyticsSettingFactory(site=other_site, umami_id="other_website_id")

@@ -154,8 +154,11 @@ class IndexView(AnalyticsSiteMixin, TemplateView):
 
     def _umami_configured(self):
         if not getattr(settings, "UMAMI_API_BASE", None):
-           return False
-        if not getattr(settings, "UMAMI_API_KEY", None) and not (getattr(settings, "UMAMI_USERNAME", None) and getattr(settings, "UMAMI_PASSWORD", None)):
+            return False
+        if not getattr(settings, "UMAMI_API_KEY", None) and not (
+            getattr(settings, "UMAMI_USERNAME", None)
+            and getattr(settings, "UMAMI_PASSWORD", None)
+        ):
             return False
         if not self.website_id:
             return False

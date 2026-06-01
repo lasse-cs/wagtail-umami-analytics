@@ -1,7 +1,12 @@
 import responses
 import pytest
 
-from wagtail_umami_analytics.client import Metric, MetricType, UmamiAPIError, UmamiClient
+from wagtail_umami_analytics.client import (
+    Metric,
+    MetricType,
+    UmamiAPIError,
+    UmamiClient,
+)
 from wagtail_umami_analytics.client import UmamiClientError
 from wagtail_umami_analytics.client import UmamiConfigurationError
 
@@ -221,6 +226,7 @@ def test_login(umami_client, umami_api_base):
     assert umami_client.login("admin", "umami") == token
     assert umami_client.session.headers["Authorization"] == f"Bearer {token}"
 
+
 @responses.activate
 def test_invalid_login(umami_client, umami_api_base):
     responses.post(
@@ -229,10 +235,10 @@ def test_invalid_login(umami_client, umami_api_base):
             "error": {
                 "code": "incorrect-username-password",
                 "message": "Unauthorized",
-                "status": 401
+                "status": 401,
             }
         },
-        status=401
+        status=401,
     )
     with pytest.raises(UmamiAPIError) as exc_info:
         umami_client.login("admin", "umami")
