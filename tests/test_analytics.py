@@ -1,6 +1,6 @@
 import pytest
 
-from datetime import UTC, datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
 from pytest_django.asserts import assertTemplateUsed
 
@@ -118,7 +118,7 @@ def test_stats_returns_503_when_umami_fails(
     umami_api_base,
 ):
     UmamiAnalyticsSettingFactory(site=site, umami_id=website_id)
-    now = datetime(2026, 1, 10, 8, tzinfo=UTC)
+    now = datetime(2026, 1, 10, 8, tzinfo=timezone.utc)
     time_machine.move_to(now)
 
     responses.get(
@@ -143,7 +143,7 @@ def test_metrics_returns_503_when_umami_fails(
     umami_api_base,
 ):
     UmamiAnalyticsSettingFactory(site=site, umami_id=website_id)
-    now = datetime(2026, 1, 10, 8, tzinfo=UTC)
+    now = datetime(2026, 1, 10, 8, tzinfo=timezone.utc)
     time_machine.move_to(now)
     time_range_params = _time_range_query_params(now)
 

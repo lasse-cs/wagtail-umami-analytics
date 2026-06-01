@@ -1,8 +1,12 @@
 from dataclasses import dataclass
-from enum import StrEnum
-from typing import Self
+from enum import Enum
 
 import requests
+
+
+class StrEnum(str, Enum):
+    def __str__(self):
+        return self.value
 
 
 class UmamiClientError(Exception):
@@ -49,7 +53,7 @@ class Metric:
     y: int
 
     @classmethod
-    def from_json(cls, value: object) -> Self:
+    def from_json(cls, value: object) -> "Metric":
         match value:
             case {"x": str(x), "y": y} if type(y) is int:
                 return cls(x=x, y=y)
@@ -70,7 +74,7 @@ class StatsComparison:
     totaltime: int
 
     @classmethod
-    def from_json(cls, value: object) -> Self:
+    def from_json(cls, value: object) -> "StatsComparison":
         match value:
             case {
                 "pageviews": pageviews,
@@ -114,7 +118,7 @@ class Stats:
     comparison: StatsComparison
 
     @classmethod
-    def from_json(cls, value: object) -> Self:
+    def from_json(cls, value: object) -> "Stats":
         match value:
             case {
                 "pageviews": pageviews,

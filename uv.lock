@@ -2,9 +2,21 @@ version = 1
 revision = 3
 requires-python = ">=3.10"
 resolution-markers = [
-    "python_full_version >= '3.12'",
-    "python_full_version < '3.12'",
+    "python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
 ]
+conflicts = [[
+    { package = "wagtail-umami-analytics", group = "django52wagtail70" },
+    { package = "wagtail-umami-analytics", group = "django52wagtail74" },
+    { package = "wagtail-umami-analytics", group = "django60wagtail70" },
+    { package = "wagtail-umami-analytics", group = "django60wagtail74" },
+]]
 
 [[package]]
 name = "anyascii"
@@ -20,7 +32,7 @@ name = "asgiref"
 version = "3.11.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/63/40/f03da1264ae8f7cfdbf9146542e5e7e8100a4c66ab48e791df9a03d3f6c0/asgiref-3.11.1.tar.gz", hash = "sha256:5f184dc43b7e763efe848065441eac62229c9f7b0475f41f80e207a114eda4ce", size = 38550, upload-time = "2026-02-03T13:30:14.33Z" }
 wheels = [
@@ -38,6 +50,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/c3/b0/1c6a16426d389813b48d95e26898aff79abbde42ad353958ad95cc8c9b21/beautifulsoup4-4.14.3.tar.gz", hash = "sha256:6292b1c5186d356bba669ef9f7f051757099565ad9ada5dd630bd9de5fa7fb86", size = 627737, upload-time = "2025-11-30T15:08:26.084Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/1a/39/47f9197bdd44df24d67ac8893641e16f386c984a0619ef2ee4c51fbbc019/beautifulsoup4-4.14.3-py3-none-any.whl", hash = "sha256:0918bfe44902e6ad8d57732ba310582e98da931428d231a5ecb9e7c703a735bb", size = 107721, upload-time = "2025-11-30T15:08:24.087Z" },
+]
+
+[[package]]
+name = "cachetools"
+version = "7.1.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/f4/8b/0d3945a13955303b81272f759a0331e54c5c793da455e6f5706b89d2639c/cachetools-7.1.4.tar.gz", hash = "sha256:437f55a4e0c1b01a4f3077cc470e6991d47430970e36fbcb77e2be0df4fc1cd6", size = 40085, upload-time = "2026-05-21T22:40:43.376Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8c/7b/1fc1c09cc0756cf25861a3be10565915953876da48bb228fb9a672b20a42/cachetools-7.1.4-py3-none-any.whl", hash = "sha256:323dc4127934744db5b54eb4924482d7edafbf9554e820d1531c2e08c0e4ef54", size = 16761, upload-time = "2026-05-21T22:40:41.845Z" },
 ]
 
 [[package]]
@@ -173,16 +194,29 @@ wheels = [
 ]
 
 [[package]]
+name = "distlib"
+version = "0.4.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/96/8e/709914eb2b5749865801041647dc7f4e6d00b549cfe88b65ca192995f07c/distlib-0.4.0.tar.gz", hash = "sha256:feec40075be03a04501a973d81f633735b4b69f98b05450592310c0f401a4e0d", size = 614605, upload-time = "2025-07-17T16:52:00.465Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/33/6b/e0547afaf41bf2c42e52430072fa5658766e3d65bd4b03a563d1b6336f57/distlib-0.4.0-py2.py3-none-any.whl", hash = "sha256:9659f7d87e46584a30b5780e43ac7a2143098441670ff0a49d5f9034c54a6c16", size = 469047, upload-time = "2025-07-17T16:51:58.613Z" },
+]
+
+[[package]]
 name = "django"
 version = "5.2.14"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version < '3.12'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
 ]
 dependencies = [
-    { name = "asgiref", marker = "python_full_version < '3.12'" },
-    { name = "sqlparse", marker = "python_full_version < '3.12'" },
-    { name = "tzdata", marker = "python_full_version < '3.12' and sys_platform == 'win32'" },
+    { name = "asgiref", marker = "python_full_version < '3.12' or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "sqlparse", marker = "python_full_version < '3.12' or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "tzdata", marker = "(python_full_version < '3.12' and sys_platform == 'win32') or (python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (sys_platform == 'win32' and extra == 'group-23-wagtail-umami-analytics-django52wagtail70') or (sys_platform == 'win32' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (sys_platform != 'win32' and extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (sys_platform != 'win32' and extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (sys_platform != 'win32' and extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (sys_platform != 'win32' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (sys_platform != 'win32' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (sys_platform != 'win32' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/65/95/95f7faa0950867afaa0bef2460c6263afd6a2c78cc9434046ed28160b015/django-5.2.14.tar.gz", hash = "sha256:58a63ba841662e5c686b57ba1fec52ddd68c0b93bd96ac3029d55728f00bf8a2", size = 10895118, upload-time = "2026-05-05T13:57:31.104Z" }
 wheels = [
@@ -197,9 +231,9 @@ resolution-markers = [
     "python_full_version >= '3.12'",
 ]
 dependencies = [
-    { name = "asgiref", marker = "python_full_version >= '3.12'" },
-    { name = "sqlparse", marker = "python_full_version >= '3.12'" },
-    { name = "tzdata", marker = "python_full_version >= '3.12' and sys_platform == 'win32'" },
+    { name = "asgiref", marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "sqlparse", marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "tzdata", marker = "(python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74') or (python_full_version < '3.12' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (sys_platform != 'win32' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/5e/f1/bf85f0d29ef76abf901f193fe8fef4769d3da7794197832bc30151c071d8/django-6.0.5.tar.gz", hash = "sha256:bc6d6872e98a2864c836e42edd644b362db311147dd5aa8d5b82ba7a032f5269", size = 10924131, upload-time = "2026-05-05T13:54:39.329Z" }
 wheels = [
@@ -211,8 +245,8 @@ name = "django-filter"
 version = "25.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/2c/e4/465d2699cd388c0005fb8d6ae6709f239917c6d8790ac35719676fffdcf3/django_filter-25.2.tar.gz", hash = "sha256:760e984a931f4468d096f5541787efb8998c61217b73006163bf2f9523fe8f23", size = 143818, upload-time = "2025-10-05T09:51:31.521Z" }
 wheels = [
@@ -224,8 +258,8 @@ name = "django-modelcluster"
 version = "6.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/34/0f/c5fd0c280a10224d619325783bfaab5a54903f82340e41ae21ab3127ebc9/django_modelcluster-6.5.tar.gz", hash = "sha256:459cbf0fb3bbc8c15ea9a2a062abc0d1ef935a38e04aa8ac3cb241c826bbc6dd", size = 29707, upload-time = "2026-05-01T12:25:33.524Z" }
 wheels = [
@@ -237,8 +271,8 @@ name = "django-permissionedforms"
 version = "0.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/94/4b/364fe61a161ead607dc6af311901ba8e62f537f8fdab94b5252cb6efe6d7/django-permissionedforms-0.1.tar.gz", hash = "sha256:4340bb20c4477fffb13b4cc5cccf9f1b1010b64f79956c291c72d2ad2ed243f8", size = 5856, upload-time = "2022-02-28T19:40:27.892Z" }
 wheels = [
@@ -250,8 +284,8 @@ name = "django-stubs-ext"
 version = "6.0.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
     { name = "typing-extensions" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/d8/01/419bc3cd882f3ec645d5a4511085202dd6bd3ef8d385871dcd2d32cc15b3/django_stubs_ext-6.0.5.tar.gz", hash = "sha256:1cc325e991303849bce70e19748981b225ef08b37256f263e113caf97cd3bcc0", size = 6666, upload-time = "2026-05-25T08:46:36.012Z" }
@@ -264,8 +298,8 @@ name = "django-taggit"
 version = "6.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/34/a6/f1beaf8f552fe90c153cc039316ebab942c23dfbc88588dde081fefca816/django_taggit-6.1.0.tar.gz", hash = "sha256:c4d1199e6df34125dd36db5eb0efe545b254dec3980ce5dd80e6bab3e78757c3", size = 38151, upload-time = "2024-09-29T08:07:39.477Z" }
 wheels = [
@@ -274,13 +308,40 @@ wheels = [
 
 [[package]]
 name = "django-tasks"
+version = "0.7.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+]
+dependencies = [
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django-stubs-ext", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "typing-extensions", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/86/d2/09aa8cac81e5eb1719bed0fdfa865501e739a384830772a01954dc59e192/django_tasks-0.7.0.tar.gz", hash = "sha256:499f80d1a051566443cfa88a300d8b03435af7fc5708cad4d8da6d285614f739", size = 29581, upload-time = "2025-04-27T17:02:58.462Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/11/e2/1079d177654bd3d4200040d031e9e42831fab532ac4ea8354db15b3280b5/django_tasks-0.7.0-py3-none-any.whl", hash = "sha256:8a8d64f2dc6e29ac2f45092d90e2dd82dc1dca100dfe3a4f2ce1209db99f3527", size = 39970, upload-time = "2025-04-27T17:02:57.181Z" },
+]
+
+[[package]]
+name = "django-tasks"
 version = "0.12.0"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+]
 dependencies = [
-    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-    { name = "django-stubs-ext" },
-    { name = "typing-extensions" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70') or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django-stubs-ext", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "typing-extensions", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/1d/6e/34d4e77bb7951e5a5acbd846f43240f062c68bb04d9c246cb446a55d4cbc/django_tasks-0.12.0.tar.gz", hash = "sha256:58be66c1e487da32a3ce7320bd1949d0d1dc381b9004819f92591eb37fb2c1b8", size = 15445, upload-time = "2026-02-06T16:15:33.593Z" }
 wheels = [
@@ -289,11 +350,36 @@ wheels = [
 
 [[package]]
 name = "django-treebeard"
+version = "4.8.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+]
+dependencies = [
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/7a/d2/615c2d33b3b55e106ee590b164c0d4a8372527293c85c61175e81ded2aea/django_treebeard-4.8.0.tar.gz", hash = "sha256:61b8076b576107da21f6f6040774c0d17025200c2efdb70dd1f14b18c9206c3a", size = 292517, upload-time = "2025-12-03T03:58:40.625Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/aa/3a/3731f6d5696b5dfd1c7830a64450e1f49b512cb192b2d3e37b72cc75470b/django_treebeard-4.8.0-py3-none-any.whl", hash = "sha256:ecaa7a0bbfa86a48fc91ff335513e83c841cdfe1add6229d04ac7096198d5d51", size = 70997, upload-time = "2025-12-03T03:58:37.292Z" },
+]
+
+[[package]]
+name = "django-treebeard"
 version = "5.1.0"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+]
 dependencies = [
-    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70') or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f7/16/aa732ea1033586e4f946d8e47be9116ffb22b050485b179a7cafb82dfc34/django_treebeard-5.1.0.tar.gz", hash = "sha256:8ac2ba41307469a679c98188124933bc3baade36b02480343d1a301a1fca0700", size = 302339, upload-time = "2026-05-12T02:06:37.002Z" }
 wheels = [
@@ -305,8 +391,8 @@ name = "djangorestframework"
 version = "3.17.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/ca/d7/c016e69fac19ff8afdc89db9d31d9ae43ae031e4d1993b20aca179b8301a/djangorestframework-3.17.1.tar.gz", hash = "sha256:a6def5f447fe78ff853bff1d47a3c59bf38f5434b031780b351b0c73a62db1a5", size = 905742, upload-time = "2026-03-24T16:58:33.705Z" }
 wheels = [
@@ -336,7 +422,7 @@ name = "exceptiongroup"
 version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.12'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.12' or (python_full_version == '3.12.*' and extra == 'group-23-wagtail-umami-analytics-django52wagtail70') or (python_full_version == '3.12.*' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (python_full_version == '3.12.*' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (python_full_version >= '3.13' and extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (python_full_version >= '3.13' and extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (python_full_version >= '3.13' and extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (python_full_version >= '3.13' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (python_full_version >= '3.13' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (python_full_version >= '3.13' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/50/79/66800aadf48771f6b62f7eb014e352e5d06856655206165d775e675a02c9/exceptiongroup-1.3.1.tar.gz", hash = "sha256:8b412432c6055b0b7d14c310000ae93352ed6754f70fa8f7c34141f91c4e3219", size = 30371, upload-time = "2025-11-21T23:01:54.787Z" }
 wheels = [
@@ -360,11 +446,20 @@ name = "faker"
 version = "40.19.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "tzdata", marker = "sys_platform == 'win32'" },
+    { name = "tzdata", marker = "sys_platform == 'win32' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/15/01/28c8ddae8caaf82c929655000963d83e3f01265a9af34e823c2ef2eee8ac/faker-40.19.1.tar.gz", hash = "sha256:76fa71fd3bf320db25e5504eb356f9a76b8a95cd6098524d006f446035b6b89d", size = 1969318, upload-time = "2026-05-22T15:57:37.433Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/49/b4/40a1ec12ec834604f3848143343baf1c67bc9a1096e401907eaa0d25876a/faker-40.19.1-py3-none-any.whl", hash = "sha256:265259b37c013838baaae34940207288170df385d6c5281413fce56a3504d580", size = 2007643, upload-time = "2026-05-22T15:57:35.867Z" },
+]
+
+[[package]]
+name = "filelock"
+version = "3.29.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b5/fe/997687a931ab51049acce6fa1f23e8f01216374ea81374ddee763c493db5/filelock-3.29.0.tar.gz", hash = "sha256:69974355e960702e789734cb4871f884ea6fe50bd8404051a3530bc07809cf90", size = 57571, upload-time = "2026-04-19T15:39:10.068Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/81/47/dd9a212ef6e343a6857485ffe25bba537304f1913bdbed446a23f7f592e1/filelock-3.29.0-py3-none-any.whl", hash = "sha256:96f5f6344709aa1572bbf631c640e4ebeeb519e08da902c39a001882f30ac258", size = 39812, upload-time = "2026-04-19T15:39:08.752Z" },
 ]
 
 [[package]]
@@ -399,8 +494,8 @@ name = "laces"
 version = "0.1.2"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/74/9a/9192d6a74e2c6db4f705dd98f56be488e47373172c13f4916aeabc4d68b8/laces-0.1.2.tar.gz", hash = "sha256:3218e09c1889ae5cf3fc7a82f5bb63ec0c7879889b6a9760bfc42323c694b84d", size = 29264, upload-time = "2025-01-14T04:37:34.805Z" }
 wheels = [
@@ -412,9 +507,9 @@ name = "modelsearch"
 version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-    { name = "django-tasks" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70') or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django-tasks", version = "0.12.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/dd/25/81121175512af4a4b152f6db3ea749535659f5890f0987cd481646527dff/modelsearch-1.3.1.tar.gz", hash = "sha256:f3b2e304dbef9f7c838423f591cfe0c60f4cef584bae8793d2aa8ac35a3c46e0", size = 103935, upload-time = "2026-04-27T23:37:08.841Z" }
 wheels = [
@@ -599,6 +694,15 @@ wheels = [
 ]
 
 [[package]]
+name = "platformdirs"
+version = "4.10.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/d7/47/e4501f49c178ae1d9f4a75073fda4204f52647993f075a9db4d14930e0c5/platformdirs-4.10.0.tar.gz", hash = "sha256:31e761a6a0ca04faf7353ea759bdba55652be214725111e5aac52dfa29d4bef7", size = 31224, upload-time = "2026-05-28T03:32:53.587Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/81/e6/cd9575ac904136b3cbf7aa7ee819ef86eedb7274e46f230e94ea4342e729/platformdirs-4.10.0-py3-none-any.whl", hash = "sha256:fb516cdb12eb0d857d0cd85a7c57cea4d060bee4578d6cf5a14dfdf8cbf8784a", size = 22743, upload-time = "2026-05-28T03:32:52.175Z" },
+]
+
+[[package]]
 name = "pluggy"
 version = "1.6.0"
 source = { registry = "https://pypi.org/simple" }
@@ -617,17 +721,30 @@ wheels = [
 ]
 
 [[package]]
+name = "pyproject-api"
+version = "1.10.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/62/62/0fe346fe380b1aafaf819c8cb195d3241bb4f355f908e6339814131a830b/pyproject_api-1.10.1.tar.gz", hash = "sha256:c2b2726bd7aa9217b6c50b621fef5b2ae5def4d55b779c9e0694c15e0a8517ba", size = 23477, upload-time = "2026-05-28T14:22:14.049Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/79/d7/29e1e5e882f79133631f7bcace42d23db493f616463c157a1ab614bf69dd/pyproject_api-1.10.1-py3-none-any.whl", hash = "sha256:fa9e6f66c35b5017e909825d8f2b5d5482ea699d7be809d21c03bd1f7317f36a", size = 12992, upload-time = "2026-05-28T14:22:12.711Z" },
+]
+
+[[package]]
 name = "pytest"
 version = "9.0.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
-    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "exceptiongroup", marker = "python_full_version < '3.11' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
     { name = "iniconfig" },
     { name = "packaging" },
     { name = "pluggy" },
     { name = "pygments" },
-    { name = "tomli", marker = "python_full_version < '3.11'" },
+    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/7d/0d/549bd94f1a0a402dc8cf64563a117c0f3765662e2e668477624baeec44d5/pytest-9.0.3.tar.gz", hash = "sha256:b86ada508af81d19edeb213c681b1d48246c1a91d304c6c81a427674c17eb91c", size = 1572165, upload-time = "2026-04-07T17:16:18.027Z" }
 wheels = [
@@ -644,6 +761,19 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/13/2b/db9a193df89e5660137f5428063bcc2ced7ad790003b26974adf5c5ceb3b/pytest_django-4.12.0.tar.gz", hash = "sha256:df94ec819a83c8979c8f6de13d9cdfbe76e8c21d39473cfe2b40c9fc9be3c758", size = 91156, upload-time = "2026-02-14T18:40:49.235Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/83/a5/41d091f697c09609e7ef1d5d61925494e0454ebf51de7de05f0f0a728f1d/pytest_django-4.12.0-py3-none-any.whl", hash = "sha256:3ff300c49f8350ba2953b90297d23bf5f589db69545f56f1ec5f8cff5da83e85", size = 26123, upload-time = "2026-02-14T18:40:47.381Z" },
+]
+
+[[package]]
+name = "python-discovery"
+version = "1.4.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "filelock" },
+    { name = "platformdirs" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/a6/12/38c1a0b1e64806780c9563e3fc9f6e472251839662587cfbe9bfaf2ae10a/python_discovery-1.4.0.tar.gz", hash = "sha256:eb8bc7daad3c226c147e45bb4e970a1feb1bf4048ee178e6db59e197b8010ce3", size = 68455, upload-time = "2026-05-28T01:15:37.639Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c8/8d/3d316429f65029532bb1e28ff77b797d86b5ac3915bb44ca4e19aa283d43/python_discovery-1.4.0-py3-none-any.whl", hash = "sha256:26ed78d703e234879a66244c7d4114563fb13ec5cd30a2d1357e5fb4850782da", size = 33217, upload-time = "2026-05-28T01:15:36.573Z" },
 ]
 
 [[package]]
@@ -931,6 +1061,52 @@ wheels = [
 ]
 
 [[package]]
+name = "tomli-w"
+version = "1.2.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/19/75/241269d1da26b624c0d5e110e8149093c759b7a286138f4efd61a60e75fe/tomli_w-1.2.0.tar.gz", hash = "sha256:2dd14fac5a47c27be9cd4c976af5a12d87fb1f0b4512f81d69cce3b35ae25021", size = 7184, upload-time = "2025-01-15T12:07:24.262Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c7/18/c86eb8e0202e32dd3df50d43d7ff9854f8e0603945ff398974c1d91ac1ef/tomli_w-1.2.0-py3-none-any.whl", hash = "sha256:188306098d013b691fcadc011abd66727d3c414c571bb01b1a174ba8c983cf90", size = 6675, upload-time = "2025-01-15T12:07:22.074Z" },
+]
+
+[[package]]
+name = "tox"
+version = "4.55.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "cachetools" },
+    { name = "colorama" },
+    { name = "filelock" },
+    { name = "packaging" },
+    { name = "platformdirs" },
+    { name = "pluggy" },
+    { name = "pyproject-api" },
+    { name = "python-discovery" },
+    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "tomli-w" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "virtualenv" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/bb/6a/d5807709acd62487b425f147c225cb75c2c22251cac6e51943b07d573636/tox-4.55.0.tar.gz", hash = "sha256:7ede1e1e70f8fe984f7985d7ca58a1e1c15fe9f8715897e38accc607c8de9f70", size = 279415, upload-time = "2026-05-28T05:16:08.099Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/11/77/513bb4464c776eb523696285352b8ef98d8d8228dada6e591b0981f5b8e8/tox-4.55.0-py3-none-any.whl", hash = "sha256:83603a222e7e2ffbeb9e92ed6516e31a0ce355b37aea13c82a2c5344274a9391", size = 214789, upload-time = "2026-05-28T05:16:06.431Z" },
+]
+
+[[package]]
+name = "tox-uv-bare"
+version = "1.35.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "packaging" },
+    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "tox" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/0a/cb/168dc1ccf24e4065a9a0a33df55709ed2b5eb73bd2b13ddd53187e5dffb8/tox_uv_bare-1.35.2.tar.gz", hash = "sha256:49e28a804c97f23ea17e25859960c0fa78f35bccb7e14344cfd840e89a9aade9", size = 32333, upload-time = "2026-05-05T01:34:18.916Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/5f/53/4a33dc81da39db7b31e5622333df361e8fe055b7ec636bd5fea762c9182d/tox_uv_bare-1.35.2-py3-none-any.whl", hash = "sha256:c0d590a41d1054a1ad0874e9e5943ff52402786e3d4599d8f8d37a65b566ef53", size = 22307, upload-time = "2026-05-05T01:34:17.681Z" },
+]
+
+[[package]]
 name = "typing-extensions"
 version = "4.15.0"
 source = { registry = "https://pypi.org/simple" }
@@ -958,29 +1134,86 @@ wheels = [
 ]
 
 [[package]]
+name = "virtualenv"
+version = "21.4.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "distlib" },
+    { name = "filelock" },
+    { name = "platformdirs" },
+    { name = "python-discovery" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/e1/0d/4e93c8e6d1001a75763f87d8f5ecda8ebc7f4aa2153dddfaf4ae8892821a/virtualenv-21.4.2.tar.gz", hash = "sha256:38e6ee0a555615c0ea9da2ac7e9998fe8dc3b911dd33ad8eaad2020957653b0c", size = 7613326, upload-time = "2026-05-31T17:01:22.827Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bf/c4/557dc082be035381b85fdb2b74e21d3d21b57750b74f2b47a32f3a639ff9/virtualenv-21.4.2-py3-none-any.whl", hash = "sha256:854210ca524a1a4d0d744734f4acbc721c3ffe163b85bbf5d56d14d5ae2f0fae", size = 7594079, upload-time = "2026-05-31T17:01:20.735Z" },
+]
+
+[[package]]
+name = "wagtail"
+version = "7.0.7"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+]
+dependencies = [
+    { name = "anyascii", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "beautifulsoup4", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django-filter", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django-modelcluster", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django-permissionedforms", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django-taggit", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django-tasks", version = "0.7.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django-treebeard", version = "4.8.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "djangorestframework", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "draftjs-exporter", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "laces", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "openpyxl", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "pillow", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "requests", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "telepath", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "willow", extra = ["heif"], marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/28/2f/ccc30da7f8d229f33dd819394bcdb85d4f59cbf37e0b8c213dd941d3d24a/wagtail-7.0.7.tar.gz", hash = "sha256:11bda16fc6bc532daa341a9c9f55f5e06990483c6f592b73a0b1bf202d255065", size = 6680030, upload-time = "2026-05-05T14:16:51.466Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bc/5a/404d8164619b2654e2eb19840c61770702ca85504c20bb66fee53c9314a1/wagtail-7.0.7-py3-none-any.whl", hash = "sha256:3131c7e991a12a5266d26853b26b3e3958d7ea634dd1b3da71632cbe14b7e912", size = 9153804, upload-time = "2026-05-05T14:16:45.127Z" },
+]
+
+[[package]]
 name = "wagtail"
 version = "7.4.1"
 source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+    "python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail74'",
+]
 dependencies = [
-    { name = "anyascii" },
-    { name = "beautifulsoup4" },
-    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
-    { name = "django-filter" },
-    { name = "django-modelcluster" },
-    { name = "django-permissionedforms" },
-    { name = "django-taggit" },
-    { name = "django-tasks" },
-    { name = "django-treebeard" },
-    { name = "djangorestframework" },
-    { name = "draftjs-exporter" },
-    { name = "laces" },
-    { name = "modelsearch" },
-    { name = "openpyxl" },
-    { name = "pillow" },
-    { name = "requests" },
-    { name = "telepath" },
-    { name = "willow", extra = ["heif"] },
+    { name = "anyascii", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "beautifulsoup4", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70') or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django-filter", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "django-modelcluster", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "django-permissionedforms", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "django-taggit", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "django-tasks", version = "0.12.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "django-treebeard", version = "5.1.0", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "djangorestframework", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "draftjs-exporter", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "laces", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "modelsearch", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "openpyxl", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "pillow", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "requests", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "telepath", marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
+    { name = "willow", extra = ["heif"], marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/81/da/c060bd9ec00335336e04a610cd1d6762e459ade9c4983f7ecddae15af36d/wagtail-7.4.1.tar.gz", hash = "sha256:c7232cbe16afa5842c236e069b2baead3b3e87e9dc90a7493330b54b69e18b83", size = 6944979, upload-time = "2026-05-19T17:26:18.762Z" }
 wheels = [
@@ -993,7 +1226,8 @@ version = "4.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "factory-boy" },
-    { name = "wagtail" },
+    { name = "wagtail", version = "7.0.7", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "wagtail", version = "7.4.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/42/8c/2ece22c2757bb3f6ef34f36cf185246b136134cf594b7b1dde92cb0a331f/wagtail_factories-4.4.0.tar.gz", hash = "sha256:c77c13d438a2e999a9220ff1829f060116013aa519a81944577353f460ba8cba", size = 9939, upload-time = "2026-02-10T15:14:13.7Z" }
 wheels = [
@@ -1005,10 +1239,11 @@ name = "wagtail-umami-analytics"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
-    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.12' and extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django60wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django52wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
     { name = "requests" },
-    { name = "wagtail" },
+    { name = "wagtail", version = "7.0.7", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail70' or extra == 'group-23-wagtail-umami-analytics-django60wagtail70' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail74' and extra == 'group-23-wagtail-umami-analytics-django60wagtail74')" },
+    { name = "wagtail", version = "7.4.1", source = { registry = "https://pypi.org/simple" }, marker = "extra == 'group-23-wagtail-umami-analytics-django52wagtail74' or extra == 'group-23-wagtail-umami-analytics-django60wagtail74' or (extra == 'group-23-wagtail-umami-analytics-django52wagtail70' and extra == 'group-23-wagtail-umami-analytics-django60wagtail70') or (extra != 'group-23-wagtail-umami-analytics-django52wagtail70' and extra != 'group-23-wagtail-umami-analytics-django60wagtail70')" },
 ]
 
 [package.dev-dependencies]
@@ -1018,7 +1253,28 @@ dev = [
     { name = "responses" },
     { name = "ruff" },
     { name = "time-machine" },
+    { name = "tox" },
+    { name = "tox-uv-bare" },
     { name = "wagtail-factories" },
+]
+django52wagtail70 = [
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" } },
+    { name = "wagtail", version = "7.0.7", source = { registry = "https://pypi.org/simple" } },
+]
+django52wagtail74 = [
+    { name = "django", version = "5.2.14", source = { registry = "https://pypi.org/simple" } },
+    { name = "wagtail", version = "7.4.1", source = { registry = "https://pypi.org/simple" } },
+]
+django60wagtail70 = [
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "wagtail", version = "7.0.7", source = { registry = "https://pypi.org/simple" } },
+]
+django60wagtail74 = [
+    { name = "django", version = "6.0.5", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+]
+tox = [
+    { name = "tox" },
+    { name = "tox-uv-bare" },
 ]
 
 [package.metadata]
@@ -1035,7 +1291,26 @@ dev = [
     { name = "responses", specifier = ">=0.26.1" },
     { name = "ruff", specifier = ">=0.15.15" },
     { name = "time-machine", specifier = ">=3.2.0" },
+    { name = "tox", specifier = ">=4.53.1" },
+    { name = "tox-uv-bare", specifier = ">=1.35.2" },
     { name = "wagtail-factories", specifier = ">=4.4.0" },
+]
+django52wagtail70 = [
+    { name = "django", marker = "python_full_version >= '3.10'", specifier = ">=5.2,<6.0" },
+    { name = "wagtail", specifier = ">=7.0,<7.1" },
+]
+django52wagtail74 = [
+    { name = "django", marker = "python_full_version >= '3.10'", specifier = ">=5.2,<6.0" },
+    { name = "wagtail", specifier = ">=7.4,<8.0" },
+]
+django60wagtail70 = [
+    { name = "django", marker = "python_full_version >= '3.12'", specifier = ">=6.0,<6.1" },
+    { name = "wagtail", specifier = ">=7.0,<7.1" },
+]
+django60wagtail74 = [{ name = "django", marker = "python_full_version >= '3.12'", specifier = ">=6.0,<6.1" }]
+tox = [
+    { name = "tox", specifier = ">=4.53.1" },
+    { name = "tox-uv-bare", specifier = ">=1.35.2" },
 ]
 
 [[package]]

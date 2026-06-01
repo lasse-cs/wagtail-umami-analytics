@@ -25,7 +25,38 @@ dev = [
     "ruff>=0.15.15",
     "time-machine>=3.2.0",
     "wagtail-factories>=4.4.0",
+    {include-group = "tox"},
 ]
+tox = [
+    "tox>=4.53.1",
+    "tox-uv-bare>=1.35.2",
+]
+django52wagtail70 = [
+    "django>=5.2,<6.0; python_version>='3.10'",
+    "wagtail>=7.0,<7.1",
+]
+django52wagtail74 = [
+    "django>=5.2,<6.0; python_version>='3.10'",
+    "wagtail>=7.4,<8.0",
+]
+django60wagtail70 = [
+    "django>=6.0,<6.1; python_version>='3.12'",
+    "wagtail>=7.0,<7.1",
+]
+django60wagtail74 = [
+    "django>=6.0,<6.1; python_version>='3.12'",
+]
+
+[tool.uv]
+conflicts = [
+    [
+        { group = "django52wagtail70" },
+        { group = "django52wagtail74" },
+        { group = "django60wagtail70" },
+        { group = "django60wagtail74" },
+    ],
+]
+
 
 [tool.pytest.ini_options]
 pythonpath = [".", "src"]
