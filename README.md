@@ -9,7 +9,9 @@ Adds a simple dashboard of Umami Analytics data into the Wagtail admin UI.
 1. Set the following settings
     - `UMAMI_HOST` to the URL of the Umami instance
     - `UMAMI_API_BASE` to the base URL of the Umami API
-    - `UMAMI_API_KEY` to your umami api key
+    - `UMAMI_API_KEY` to your umami api key (only for umami cloud)
+    - `UMAMI_USERNAME` to your umami username (only for self hosted umami)
+    - `UMAMI_PASSWORD` to your umami password (only for self hosted umami)
 1. Register the `wagtail_umami_analytics.UmamiAnalyticsSetting` setting
     ```python
     from wagtail.contrib.settings.models import register_setting

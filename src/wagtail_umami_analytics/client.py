@@ -156,18 +156,14 @@ class UmamiClient:
     def __init__(
         self,
         base_url: str,
-        api_key: str,
         website_id: str | None = None,
         timeout: int = 10,
     ):
         self.base_url = base_url.strip("/")
-        self.api_key = api_key
         self.website_id = website_id
         self.timeout = timeout
         self.session = requests.Session()
-        self.session.headers.update(
-            {"x-umami-api-key": self.api_key, "Accept": "application/json"}
-        )
+        self.session.headers["Accept"] = "application/json"
 
     def __enter__(self):
         return self
@@ -175,9 +171,19 @@ class UmamiClient:
     def __exit__(self, *args):
         self.session.close()
 
-    def _request(self, endpoint: str, **kwargs) -> requests.Response:
+    def _get(self, endpoint: str, **kwargs) -> requests.Response:
         try:
             return self.session.get(
+                f"{self.base_url}{endpoint}",
+                timeout=self.timeout,
+                **kwargs,
+            )
+        except requests.RequestException as e:
+            raise UmamiClientError(f"Umami request failed for {endpoint}") from e
+
+    def _post(self, endpoint: str, **kwargs) -> requests.Response:
+        try:
+            return self.session.post(
                 f"{self.base_url}{endpoint}",
                 timeout=self.timeout,
                 **kwargs,
@@ -199,8 +205,25 @@ class UmamiClient:
         except ValueError as e:
             raise UmamiClientError("Umami API returned invalid JSON") from e
 
+    def set_api_key(self, api_key: str):
+        self.session.headers["x-umami-api-key"] = api_key
+
+    def login(self, username: str, password: str):
+        body = {
+            "username": username,
+            "password": password,
+        }
+        response = self._post("/auth/login", json=body)
+        json_response = self._handle_response(response)
+        if "token" not in json_response or not isinstance(json_response["token"], str):
+            raise UmamiClientError(
+                "Umami API returned invalid login token, expected token str"
+            )
+        self.session.headers["Authorization"] = "Bearer " + json_response["token"]
+        return json_response["token"]
+
     def active_users(self, website_id: str | None = None) -> int:
-        response = self._request(
+        response = self._get(
             f"/websites/{self._website_id(website_id)}/active",
         )
         json_response = self._handle_response(response)
@@ -236,7 +259,7 @@ class UmamiClient:
         if offset is not None:
             params["offset"] = offset
 
-        response = self._request(
+        response = self._get(
             f"/websites/{self._website_id(website_id)}/metrics",
             params=params,
         )
@@ -246,7 +269,7 @@ class UmamiClient:
         return [Metric.from_json(metric) for metric in json_response]
 
     def stats(self, startAt: int, endAt: int, website_id: str | None = None) -> Stats:
-        response = self._request(
+        response = self._get(
             f"/websites/{self._website_id(website_id)}/stats",
             params={
                 "startAt": startAt,

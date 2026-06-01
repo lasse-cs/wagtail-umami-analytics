@@ -55,10 +55,14 @@ def website_id():
 
 
 @pytest.fixture
-def umami_client(umami_api_base, umami_api_key, website_id):
-    with UmamiClient(umami_api_base, umami_api_key, website_id=website_id) as client:
+def umami_client(umami_api_base, website_id):
+    with UmamiClient(umami_api_base, website_id=website_id) as client:
         yield client
 
+@pytest.fixture
+def umami_api_client(umami_client, umami_api_key):
+    umami_client.set_api_key(umami_api_key)
+    yield umami_client
 
 @pytest.fixture
 def configured_umami_settings(settings, umami_api_base, umami_api_key):

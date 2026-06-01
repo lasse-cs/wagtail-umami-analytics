@@ -14,7 +14,13 @@ from wagtail.admin.viewsets.base import ViewSet
 from wagtail.contrib.settings.forms import SiteSwitchForm
 from wagtail.models import Site
 
-from wagtail_umami_analytics.client import Metric, MetricType, Stats, UmamiClient, UmamiClientError
+from wagtail_umami_analytics.client import (
+    Metric,
+    MetricType,
+    Stats,
+    UmamiClient,
+    UmamiClientError,
+)
 from wagtail_umami_analytics.models import UmamiAnalyticsSetting
 
 
@@ -22,10 +28,14 @@ logger = logging.getLogger(__name__)
 
 
 def _get_client():
-    return UmamiClient(
-        base_url=getattr(settings, "UMAMI_API_BASE", None),
-        api_key=getattr(settings, "UMAMI_API_KEY", None),
-    )
+    client = UmamiClient(base_url=getattr(settings, "UMAMI_API_BASE", None))
+    if getattr(settings, "UMAMI_API_KEY", None):
+        client.set_api_key(api_key=getattr(settings, "UMAMI_API_KEY", None))
+    else:
+        username = getattr(settings, "UMAMI_USERNAME", None)
+        password = getattr(settings, "UMAMI_PASSWORD", None)
+        client.login(username, password)
+    return client
 
 
 def _get_time_range_days(days: int = 7) -> tuple[int, int]:
@@ -142,6 +152,15 @@ class AnalyticsSiteMixin:
 class IndexView(AnalyticsSiteMixin, TemplateView):
     template_name = "wagtail_umami_analytics/index.html"
 
+    def _umami_configured(self):
+        if not getattr(settings, "UMAMI_API_BASE", None):
+           return False
+        if not getattr(settings, "UMAMI_API_KEY", None) and not (getattr(settings, "UMAMI_USERNAME", None) and getattr(settings, "UMAMI_PASSWORD", None)):
+            return False
+        if not self.website_id:
+            return False
+        return True
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         sites = self.get_available_sites()
@@ -156,11 +175,7 @@ class IndexView(AnalyticsSiteMixin, TemplateView):
             {
                 "site": self.site,
                 "site_switcher": site_switcher,
-                "umami_configured": bool(
-                    getattr(settings, "UMAMI_API_BASE", None)
-                    and getattr(settings, "UMAMI_API_KEY", None)
-                    and self.website_id
-                ),
+                "umami_configured": self._umami_configured(),
             }
         )
         return context
