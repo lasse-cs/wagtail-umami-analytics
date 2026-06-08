@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [build-system]
-requires = ["uv_build>=0.11.8,<0.12.0"]
+requires = ["uv_build>=0.11.19,<0.12.0"]
 build-backend = "uv_build"
 
 [dependency-groups]
@@ -22,13 +22,13 @@ dev = [
     "pytest>=9.0.3",
     "pytest-django>=4.12.0",
     "responses>=0.26.1",
-    "ruff>=0.15.15",
+    "ruff>=0.15.16",
     "time-machine>=3.2.0",
-    "wagtail-factories>=4.4.0",
+    "wagtail-factories>=4.5.0",
     {include-group = "tox"},
 ]
 tox = [
-    "tox>=4.53.1",
+    "tox>=4.55.1",
     "tox-uv-bare>=1.35.2",
 ]
 django52wagtail70 = [
