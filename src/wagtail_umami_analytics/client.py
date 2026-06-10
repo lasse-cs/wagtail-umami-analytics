@@ -212,6 +212,9 @@ class UmamiClient:
     def set_api_key(self, api_key: str):
         self.session.headers["x-umami-api-key"] = api_key
 
+    def set_bearer_token(self, token: str):
+        self.session.headers["Authorization"] = "Bearer " + token
+
     def login(self, username: str, password: str):
         body = {
             "username": username,
@@ -219,12 +222,16 @@ class UmamiClient:
         }
         response = self._post("/auth/login", json=body)
         json_response = self._handle_response(response)
-        if "token" not in json_response or not isinstance(json_response["token"], str):
+        token = json_response.get("token")
+        if not isinstance(token, str):
             raise UmamiClientError(
                 "Umami API returned invalid login token, expected token str"
             )
-        self.session.headers["Authorization"] = "Bearer " + json_response["token"]
-        return json_response["token"]
+        self.set_bearer_token(token)
+        return token
+
+    def uses_api_key(self) -> bool:
+        return "x-umami-api-key" in self.session.headers
 
     def active_users(self, website_id: str | None = None) -> int:
         response = self._get(

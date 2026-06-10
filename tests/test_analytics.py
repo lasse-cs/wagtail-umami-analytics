@@ -6,10 +6,12 @@ from pytest_django.asserts import assertTemplateUsed
 
 import responses
 
+from django.core.cache import cache
 from django.urls import reverse
 
 from wagtail.models import Site
 from wagtail_factories import SiteFactory
+from wagtail_umami_analytics.views import UMAMI_TOKEN_CACHE_KEY
 
 from .factories import UmamiAnalyticsSettingFactory
 
@@ -107,6 +109,81 @@ def test_active_users_uses_selected_site_settings(admin_client, site, umami_api_
 
     assert response.status_code == 200
     assert response.json() == {"active_users": 3}
+
+
+@responses.activate
+def test_active_users_reuses_cached_login_token(
+    admin_client, settings, site, website_id, umami_api_base
+):
+    cache.clear()
+    settings.UMAMI_API_KEY = None
+    settings.UMAMI_USERNAME = "admin"
+    settings.UMAMI_PASSWORD = "umami"
+    other_site = SiteFactory(hostname="other.example.com", is_default_site=False)
+    UmamiAnalyticsSettingFactory(site=site, umami_id=website_id)
+    UmamiAnalyticsSettingFactory(site=other_site, umami_id="other_website_id")
+    token = "Token"
+    responses.post(f"{umami_api_base}auth/login", json={"token": token})
+    responses.get(
+        f"{umami_api_base}websites/{website_id}/active",
+        json={"visitors": 3},
+        match=[responses.matchers.header_matcher({"Authorization": f"Bearer {token}"})],
+    )
+    responses.get(
+        f"{umami_api_base}websites/other_website_id/active",
+        json={"visitors": 5},
+        match=[responses.matchers.header_matcher({"Authorization": f"Bearer {token}"})],
+    )
+
+    first_response = admin_client.get(reverse("analytics:active_users", args=[site.pk]))
+    second_response = admin_client.get(
+        reverse("analytics:active_users", args=[other_site.pk])
+    )
+
+    assert first_response.status_code == 200
+    assert first_response.json() == {"active_users": 3}
+    assert second_response.status_code == 200
+    assert second_response.json() == {"active_users": 5}
+    login_calls = [
+        call
+        for call in responses.calls
+        if call.request.url == f"{umami_api_base}auth/login"
+    ]
+    assert len(login_calls) == 1
+
+
+@responses.activate
+def test_active_users_refreshes_stale_cached_login_token(
+    admin_client, settings, site, website_id, umami_api_base
+):
+    cache.clear()
+    settings.UMAMI_API_KEY = None
+    settings.UMAMI_USERNAME = "admin"
+    settings.UMAMI_PASSWORD = "umami"
+    UmamiAnalyticsSettingFactory(site=site, umami_id=website_id)
+    cache.set(UMAMI_TOKEN_CACHE_KEY, "StaleToken")
+    responses.get(
+        f"{umami_api_base}websites/{website_id}/active",
+        json={"error": "Unauthorized"},
+        status=401,
+        match=[
+            responses.matchers.header_matcher({"Authorization": "Bearer StaleToken"})
+        ],
+    )
+    responses.post(f"{umami_api_base}auth/login", json={"token": "FreshToken"})
+    responses.get(
+        f"{umami_api_base}websites/{website_id}/active",
+        json={"visitors": 3},
+        match=[
+            responses.matchers.header_matcher({"Authorization": "Bearer FreshToken"})
+        ],
+    )
+
+    response = admin_client.get(reverse("analytics:active_users", args=[site.pk]))
+
+    assert response.status_code == 200
+    assert response.json() == {"active_users": 3}
+    assert cache.get(UMAMI_TOKEN_CACHE_KEY) == "FreshToken"
 
 
 @responses.activate

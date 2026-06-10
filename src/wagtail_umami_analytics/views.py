@@ -1,6 +1,8 @@
+from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import timedelta
 import logging
+from typing import TypeVar
 
 from django.conf import settings
 from django.core.cache import cache
@@ -18,6 +20,7 @@ from wagtail_umami_analytics.client import (
     Metric,
     MetricType,
     Stats,
+    UmamiAPIError,
     UmamiClient,
     UmamiClientError,
 )
@@ -26,16 +29,47 @@ from wagtail_umami_analytics.models import UmamiAnalyticsSetting
 
 logger = logging.getLogger(__name__)
 
+UMAMI_TOKEN_CACHE_KEY = "wagtail_umami_analytics:token"
+UMAMI_TOKEN_CACHE_TIMEOUT = 60 * 60
 
-def _get_client():
+T = TypeVar("T")
+
+
+def _login_and_cache_token(client: UmamiClient) -> str:
+    token = client.login(settings.UMAMI_USERNAME, settings.UMAMI_PASSWORD)
+    cache.set(
+        UMAMI_TOKEN_CACHE_KEY,
+        token,
+        timeout=getattr(
+            settings, "UMAMI_TOKEN_CACHE_TIMEOUT", UMAMI_TOKEN_CACHE_TIMEOUT
+        ),
+    )
+    return token
+
+
+def _get_client() -> UmamiClient:
     client = UmamiClient(base_url=getattr(settings, "UMAMI_API_BASE", None))
     if getattr(settings, "UMAMI_API_KEY", None):
         client.set_api_key(api_key=getattr(settings, "UMAMI_API_KEY", None))
     else:
-        username = getattr(settings, "UMAMI_USERNAME", None)
-        password = getattr(settings, "UMAMI_PASSWORD", None)
-        client.login(username, password)
+        token = cache.get(UMAMI_TOKEN_CACHE_KEY)
+        if token is None:
+            _login_and_cache_token(client)
+        else:
+            client.set_bearer_token(token)
     return client
+
+
+def _call_umami(client: UmamiClient, callback: Callable[[UmamiClient], T]) -> T:
+    try:
+        return callback(client)
+    except UmamiAPIError as e:
+        if client.uses_api_key() or e.status_code not in (401, 403):
+            raise
+
+        cache.delete(UMAMI_TOKEN_CACHE_KEY)
+        _login_and_cache_token(client)
+        return callback(client)
 
 
 def _get_time_range_days(days: int = 7) -> tuple[int, int]:
@@ -46,15 +80,21 @@ def _get_time_range_days(days: int = 7) -> tuple[int, int]:
 
 def _fetch_stats(start_at: int, end_at: int, website_id: str) -> Stats:
     with _get_client() as client:
-        return client.stats(start_at, end_at, website_id=website_id)
+        return _call_umami(
+            client,
+            lambda client: client.stats(start_at, end_at, website_id=website_id),
+        )
 
 
 def _fetch_metrics(
     start_at: int, end_at: int, metric_type: MetricType, website_id: str
 ) -> list[Metric]:
     with _get_client() as client:
-        return client.metrics(
-            start_at, end_at, metric_type, limit=10, website_id=website_id
+        return _call_umami(
+            client,
+            lambda client: client.metrics(
+                start_at, end_at, metric_type, limit=10, website_id=website_id
+            ),
         )
 
 
@@ -65,7 +105,10 @@ def get_active_users(website_id: str) -> int:
         return cached
 
     with _get_client() as client:
-        active = client.active_users(website_id=website_id)
+        active = _call_umami(
+            client,
+            lambda client: client.active_users(website_id=website_id),
+        )
     cache.set(cache_key, active, timeout=300)
     return active
 
