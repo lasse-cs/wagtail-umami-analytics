@@ -1,0 +1,14 @@
+{% extends 'wagtailadmin/shared/headers/slim_header.html' %}
+
+{% load i18n %}
+
+{% block search_form %}
+    {% if site_switcher %}
+        <form class="w-slim-header__search-form" method="get" id="analytics-site-switch" novalidate>
+            <label for="{{ site_switcher.site.id_for_label }}" class="w-sr-only">
+                {% trans "Site" %}:
+            </label>
+            {{ site_switcher.site }}
+        </form>
+    {% endif %}
+{% endblock search_form %}

@@ -7,18 +7,9 @@
 {% endblock titletag %}
 
 {% block content %}
-    {% include 'wagtailadmin/shared/header.html' with title="Analytics" icon="desktop" %}
+    {% include "wagtail_umami_analytics/header.html" with breadcrumbs_items=breadcrumbs_items side_panels=side_panels history_url=history_url title=header_title search_url=index_results_url search_form=search_form filters=filters buttons=header_buttons icon_name=header_icon site_switcher=site_switcher only %}
 
-    <div class="nice-padding">
-        {% if site_switcher %}
-            <form class="w-mb-8" method="get" id="analytics-site-switch" novalidate>
-                <label for="{{ site_switcher.site.id_for_label }}">
-                    {% trans "Site" %}:
-                </label>
-                {{ site_switcher.site }}
-            </form>
-        {% endif %}
-
+    <div class="nice-padding w-mt-8">
         {% if not umami_configured %}
             <p>Analytics is not configured for {{ site.hostname }}.</p>
         {% else %}

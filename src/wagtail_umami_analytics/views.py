@@ -9,9 +9,10 @@ from django.core.cache import cache
 from django.http import Http404
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.urls import path, reverse
+from django.urls import path, reverse, reverse_lazy
 from django.utils import timezone
 from django.views.generic import TemplateView, View
+from wagtail.admin.views.generic import WagtailAdminTemplateMixin
 from wagtail.admin.viewsets.base import ViewSet
 from wagtail.contrib.settings.forms import SiteSwitchForm
 from wagtail.models import Site
@@ -192,8 +193,20 @@ class AnalyticsSiteMixin:
         return get_object_or_404(Site, pk=site_pk)
 
 
-class IndexView(AnalyticsSiteMixin, TemplateView):
+class IndexView(AnalyticsSiteMixin, WagtailAdminTemplateMixin, TemplateView):
+    page_title = "Umami Analytics"
+    header_icon = "desktop"
     template_name = "wagtail_umami_analytics/index.html"
+
+    def get_breadcrumbs_items(self):
+        site = self.get_site()
+        return [
+            *WagtailAdminTemplateMixin.breadcrumbs_items,
+            {
+                "url": reverse_lazy("analytics:index_for_site", args=[site.pk]),
+                "label": "Umami Analytics",
+            },
+        ]
 
     def _umami_configured(self):
         if not getattr(settings, "UMAMI_API_BASE", None):
