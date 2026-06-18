@@ -11,4 +11,12 @@
             {{ site_switcher.site }}
         </form>
     {% endif %}
+    {% if time_range_form %}
+        <form class="w-slim-header__search-form" method="get" id="analytics-time-range" novalidate>
+            <label for="{{ time_range_form.range.id_for_label }}" class="w-sr-only">
+                {% trans "Time range" %}:
+            </label>
+            {{ time_range_form.range }}
+        </form>
+    {% endif %}
 {% endblock search_form %}

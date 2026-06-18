@@ -1,6 +1,6 @@
 [project]
 name = "wagtail-umami-analytics"
-version = "0.1.0"
+version = "0.2.0"
 description = "Umami Analytics Dashboard for Wagtail"
 readme = "README.md"
 authors = [

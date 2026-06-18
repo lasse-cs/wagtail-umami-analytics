@@ -5,7 +5,9 @@ import logging
 from typing import TypeVar
 
 from django.conf import settings
+from django import forms
 from django.core.cache import cache
+from django.db import models
 from django.http import Http404
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
@@ -33,7 +35,41 @@ logger = logging.getLogger(__name__)
 UMAMI_TOKEN_CACHE_KEY = "wagtail_umami_analytics:token"
 UMAMI_TOKEN_CACHE_TIMEOUT = 60 * 60
 
+
+class TimeRange(models.TextChoices):
+    TODAY = "today", "Today"
+    LAST_7_DAYS = "7d", "Last 7 days"
+    LAST_30_DAYS = "30d", "Last 30 days"
+
+
+DEFAULT_TIME_RANGE = TimeRange.LAST_7_DAYS
+
 T = TypeVar("T")
+
+
+class TimeRangeForm(forms.Form):
+    range = forms.ChoiceField(
+        choices=TimeRange.choices,
+        initial=DEFAULT_TIME_RANGE,
+        required=False,
+        label="Time range",
+    )
+
+    def clean_range(self):
+        return self.cleaned_data["range"] or DEFAULT_TIME_RANGE
+
+
+class TimeRangeRedirectForm(forms.Form):
+    range = forms.ChoiceField(
+        choices=(),
+        label="Time range",
+        widget=forms.Select(
+            attrs={
+                "data-controller": "w-action",
+                "data-action": "change->w-action#redirect",
+            }
+        ),
+    )
 
 
 def _login_and_cache_token(client: UmamiClient) -> str:
@@ -73,9 +109,21 @@ def _call_umami(client: UmamiClient, callback: Callable[[UmamiClient], T]) -> T:
         return callback(client)
 
 
-def _get_time_range_days(days: int = 7) -> tuple[int, int]:
-    now = timezone.now()
-    start = now - timedelta(days=days)
+def _get_time_range(time_range: str = DEFAULT_TIME_RANGE) -> tuple[int, int]:
+    now = timezone.now().replace(microsecond=0)
+
+    match time_range:
+        case TimeRange.TODAY:
+            start = timezone.localtime(now).replace(
+                hour=0, minute=0, second=0, microsecond=0
+            )
+        case TimeRange.LAST_30_DAYS:
+            start = now - timedelta(days=30)
+        case TimeRange.LAST_7_DAYS:
+            start = now - timedelta(days=7)
+        case _:
+            raise ValueError(f"Unsupported time range: {time_range}")
+
     return int(start.timestamp() * 1000), int(now.timestamp() * 1000)
 
 
@@ -114,26 +162,28 @@ def get_active_users(website_id: str) -> int:
     return active
 
 
-def get_stats(website_id: str) -> Stats:
-    cache_key = f"analytics:stats:{website_id}"
+def get_stats(website_id: str, time_range: str = DEFAULT_TIME_RANGE) -> Stats:
+    cache_key = f"analytics:stats:{website_id}:{time_range}"
     cached = cache.get(cache_key)
     if cached is not None:
         return cached
 
-    start_at, end_at = _get_time_range_days(7)
+    start_at, end_at = _get_time_range(time_range)
     stats = _fetch_stats(start_at, end_at, website_id)
     if stats:
         cache.set(cache_key, stats)
     return stats
 
 
-def get_metrics(website_id: str) -> dict[str, list[Metric]]:
-    cache_key = f"analytics:stats_metrics:{website_id}"
+def get_metrics(
+    website_id: str, time_range: str = DEFAULT_TIME_RANGE
+) -> dict[str, list[Metric]]:
+    cache_key = f"analytics:stats_metrics:{website_id}:{time_range}"
     cached = cache.get(cache_key)
     if cached is not None:
         return cached
 
-    start_at, end_at = _get_time_range_days(7)
+    start_at, end_at = _get_time_range(time_range)
 
     metrics = {"paths": [], "referrers": [], "countries": []}
     with ThreadPoolExecutor(max_workers=3) as executor:
@@ -193,7 +243,35 @@ class AnalyticsSiteMixin:
         return get_object_or_404(Site, pk=site_pk)
 
 
-class IndexView(AnalyticsSiteMixin, WagtailAdminTemplateMixin, TemplateView):
+class TimeRangeMixin:
+    def get_time_range(self):
+        form = TimeRangeForm(self.request.GET)
+        if form.is_valid():
+            return form.cleaned_data["range"]
+
+        return DEFAULT_TIME_RANGE
+
+    def get_time_range_form(self):
+        selected_range = self.get_time_range()
+        choices = []
+        selected_url = None
+
+        for value, label in TimeRange.choices:
+            query = self.request.GET.copy()
+            query["range"] = value
+            url = f"{self.request.path}?{query.urlencode()}"
+            choices.append((url, label))
+            if value == selected_range:
+                selected_url = url
+
+        form = TimeRangeRedirectForm(initial={"range": selected_url})
+        form.fields["range"].choices = choices
+        return form
+
+
+class IndexView(
+    TimeRangeMixin, AnalyticsSiteMixin, WagtailAdminTemplateMixin, TemplateView
+):
     page_title = "Umami Analytics"
     header_icon = "desktop"
     template_name = "wagtail_umami_analytics/index.html"
@@ -234,6 +312,8 @@ class IndexView(AnalyticsSiteMixin, WagtailAdminTemplateMixin, TemplateView):
             {
                 "site": self.site,
                 "site_switcher": site_switcher,
+                "time_range_form": self.get_time_range_form(),
+                "time_range": self.get_time_range(),
                 "umami_configured": self._umami_configured(),
             }
         )
@@ -261,18 +341,18 @@ class ActiveUsersView(AnalyticsJsonView):
         return {"active_users": get_active_users(self.website_id)}
 
 
-class StatsView(AnalyticsJsonView):
+class StatsView(TimeRangeMixin, AnalyticsJsonView):
     error_message = "Failed to fetch stats from Umami"
 
     def get_response_data(self):
-        return {"stats": get_stats(self.website_id).to_dict()}
+        return {"stats": get_stats(self.website_id, self.get_time_range()).to_dict()}
 
 
-class MetricsView(AnalyticsJsonView):
+class MetricsView(TimeRangeMixin, AnalyticsJsonView):
     error_message = "Failed to fetch metrics from Umami"
 
     def get_response_data(self):
-        metrics = get_metrics(self.website_id)
+        metrics = get_metrics(self.website_id, self.get_time_range())
         metrics_response = {
             key: [metric.to_dict() for metric in value]
             for key, value in metrics.items()

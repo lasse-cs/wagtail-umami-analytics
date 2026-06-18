@@ -24,10 +24,35 @@ pytestmark = [
 ]
 
 
-def _time_range_query_params(now: datetime) -> dict[str, str]:
+def _time_range_query_params(now: datetime, days: int = 7) -> dict[str, str]:
     return {
-        "startAt": str(int((now - timedelta(days=7)).timestamp() * 1000)),
+        "startAt": str(int((now - timedelta(days=days)).timestamp() * 1000)),
         "endAt": str(int(now.timestamp() * 1000)),
+    }
+
+
+def _today_query_params(now: datetime) -> dict[str, str]:
+    start = now.replace(hour=0, minute=0, second=0, microsecond=0)
+    return {
+        "startAt": str(int(start.timestamp() * 1000)),
+        "endAt": str(int(now.timestamp() * 1000)),
+    }
+
+
+def _stats_response() -> dict[str, int | dict[str, int]]:
+    return {
+        "pageviews": 10,
+        "visitors": 8,
+        "visits": 9,
+        "bounces": 2,
+        "totaltime": 120,
+        "comparison": {
+            "pageviews": 1,
+            "visitors": 1,
+            "visits": 1,
+            "bounces": 0,
+            "totaltime": 10,
+        },
     }
 
 
@@ -212,6 +237,64 @@ def test_stats_returns_503_when_umami_fails(
 
 
 @responses.activate
+def test_stats_uses_selected_time_range(
+    admin_client,
+    time_machine,
+    site,
+    website_id,
+    umami_api_base,
+):
+    cache.clear()
+    UmamiAnalyticsSettingFactory(site=site, umami_id=website_id)
+    now = datetime(2026, 1, 10, 8, tzinfo=timezone.utc)
+    time_machine.move_to(now)
+
+    responses.get(
+        f"{umami_api_base}websites/{website_id}/stats",
+        json=_stats_response(),
+        match=[
+            responses.matchers.query_param_matcher(
+                _time_range_query_params(now, days=30)
+            )
+        ],
+    )
+
+    response = admin_client.get(
+        reverse("analytics:stats", args=[site.pk]), {"range": "30d"}
+    )
+
+    assert response.status_code == 200
+    assert response.json()["stats"]["pageviews"] == 10
+
+
+@responses.activate
+def test_stats_today_time_range_starts_at_midnight(
+    admin_client,
+    time_machine,
+    site,
+    website_id,
+    umami_api_base,
+):
+    cache.clear()
+    UmamiAnalyticsSettingFactory(site=site, umami_id=website_id)
+    now = datetime(2026, 1, 10, 8, 30, tzinfo=timezone.utc)
+    time_machine.move_to(now)
+
+    responses.get(
+        f"{umami_api_base}websites/{website_id}/stats",
+        json=_stats_response(),
+        match=[responses.matchers.query_param_matcher(_today_query_params(now))],
+    )
+
+    response = admin_client.get(
+        reverse("analytics:stats", args=[site.pk]), {"range": "today"}
+    )
+
+    assert response.status_code == 200
+    assert response.json()["stats"]["pageviews"] == 10
+
+
+@responses.activate
 def test_metrics_returns_503_when_umami_fails(
     admin_client,
     time_machine,
@@ -266,3 +349,54 @@ def test_metrics_returns_503_when_umami_fails(
 
     assert response.status_code == 503
     assert response.json() == {"error": "Umami is unavailable"}
+
+
+@responses.activate
+def test_metrics_uses_selected_time_range(
+    admin_client,
+    time_machine,
+    site,
+    website_id,
+    umami_api_base,
+):
+    cache.clear()
+    UmamiAnalyticsSettingFactory(site=site, umami_id=website_id)
+    now = datetime(2026, 1, 10, 8, tzinfo=timezone.utc)
+    time_machine.move_to(now)
+    time_range_params = _time_range_query_params(now, days=30)
+
+    response_url = f"{umami_api_base}websites/{website_id}/metrics"
+    responses.get(
+        response_url,
+        json=[{"x": "path", "y": 1}],
+        match=[
+            responses.matchers.query_param_matcher(
+                {**time_range_params, "type": "path", "limit": "10"}
+            )
+        ],
+    )
+    responses.get(
+        response_url,
+        json=[{"x": "referrer", "y": 2}],
+        match=[
+            responses.matchers.query_param_matcher(
+                {**time_range_params, "type": "referrer", "limit": "10"}
+            )
+        ],
+    )
+    responses.get(
+        response_url,
+        json=[{"x": "country", "y": 3}],
+        match=[
+            responses.matchers.query_param_matcher(
+                {**time_range_params, "type": "country", "limit": "10"}
+            )
+        ],
+    )
+
+    response = admin_client.get(
+        reverse("analytics:metrics", args=[site.pk]), {"range": "30d"}
+    )
+
+    assert response.status_code == 200
+    assert response.json()["metrics"]["paths"] == [{"x": "path", "y": 1}]

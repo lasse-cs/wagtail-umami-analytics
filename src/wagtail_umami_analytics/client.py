@@ -49,19 +49,20 @@ class MetricType(StrEnum):
 
 @dataclass(frozen=True, slots=True)
 class Metric:
-    x: str
+    x: str | None
     y: int
 
     @classmethod
     def from_json(cls, value: object) -> "Metric":
         match value:
-            case {"x": str(x), "y": y} if type(y) is int:
+            case {"x": (str() | None) as x, "y": y} if type(y) is int:
                 return cls(x=x, y=y)
         raise UmamiClientError(
             "Umami API returned invalid metric response: expected x str and y int"
+            + str(value)
         )
 
-    def to_dict(self) -> dict[str, str | int]:
+    def to_dict(self) -> dict[str, str | int | None]:
         return {"x": self.x, "y": self.y}
 
 

@@ -7,7 +7,7 @@
 {% endblock titletag %}
 
 {% block content %}
-    {% include "wagtail_umami_analytics/header.html" with breadcrumbs_items=breadcrumbs_items side_panels=side_panels history_url=history_url title=header_title search_url=index_results_url search_form=search_form filters=filters buttons=header_buttons icon_name=header_icon site_switcher=site_switcher only %}
+    {% include "wagtail_umami_analytics/header.html" with breadcrumbs_items=breadcrumbs_items side_panels=side_panels history_url=history_url title=header_title search_url=index_results_url search_form=search_form filters=filters buttons=header_buttons icon_name=header_icon site_switcher=site_switcher time_range_form=time_range_form only %}
 
     <div class="nice-padding w-mt-8">
         {% if not umami_configured %}
@@ -16,7 +16,7 @@
             <section
                 class="w-summary loading-mask"
                 data-controller="content-loader analytics-summary"
-                data-content-loader-url-value="{% url 'analytics:stats' site.pk %}"
+                data-content-loader-url-value="{% url 'analytics:stats' site.pk %}{% querystring range=time_range %}"
                 data-content-loader-loading-class="loading"
                 data-action="content-loader:loaded->analytics-summary#updateStats content-loader:failed->analytics-summary#onFailure"
             >
@@ -60,7 +60,7 @@
             </section>
             <section class="loading-mask"
                      data-controller="content-loader analytics-metrics"
-                     data-content-loader-url-value="{% url 'analytics:metrics' site.pk %}"
+                     data-content-loader-url-value="{% url 'analytics:metrics' site.pk %}{% querystring range=time_range %}"
                      data-content-loader-loading-class="loading"
                      data-action="content-loader:loaded->analytics-metrics#updateMetrics content-loader:failed->analytics-metrics#onFailure"
             >
