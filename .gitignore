@@ -11,3 +11,6 @@ wheels/
 
 *.sqlite3
 example/example/settings/local.py
+
+# Editors
+.vscode/
