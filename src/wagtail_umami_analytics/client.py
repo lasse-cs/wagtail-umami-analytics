@@ -280,12 +280,22 @@ class UmamiClient:
             raise UmamiClientError("Umami API returned invalid metrics response")
         return [Metric.from_json(metric) for metric in json_response]
 
-    def stats(self, startAt: int, endAt: int, website_id: str | None = None) -> Stats:
+    def stats(
+        self,
+        startAt: int,
+        endAt: int,
+        website_id: str | None = None,
+        path: str | None = None,
+    ) -> Stats:
+        params = {
+            "startAt": startAt,
+            "endAt": endAt,
+        }
+        if path is not None:
+            params["path"] = path
+
         response = self._get(
             f"/websites/{self._website_id(website_id)}/stats",
-            params={
-                "startAt": startAt,
-                "endAt": endAt,
-            },
+            params=params,
         )
         return Stats.from_json(self._handle_response(response))

@@ -1,6 +1,7 @@
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import timedelta
+import hashlib
 import logging
 from typing import TypeVar
 
@@ -9,15 +10,17 @@ from django import forms
 from django.core.cache import cache
 from django.db import models
 from django.http import Http404
+from django.http import HttpResponseForbidden
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import path, reverse, reverse_lazy
+from django.utils.translation import gettext as _
 from django.utils import timezone
 from django.views.generic import TemplateView, View
 from wagtail.admin.views.generic import WagtailAdminTemplateMixin
 from wagtail.admin.viewsets.base import ViewSet
 from wagtail.contrib.settings.forms import SiteSwitchForm
-from wagtail.models import Site
+from wagtail.models import Page, Site
 
 from wagtail_umami_analytics.client import (
     Metric,
@@ -34,6 +37,7 @@ logger = logging.getLogger(__name__)
 
 UMAMI_TOKEN_CACHE_KEY = "wagtail_umami_analytics:token"
 UMAMI_TOKEN_CACHE_TIMEOUT = 60 * 60
+PAGE_STATS_CACHE_TIMEOUT = 60 * 20
 
 
 class TimeRange(models.TextChoices):
@@ -43,20 +47,32 @@ class TimeRange(models.TextChoices):
 
 
 DEFAULT_TIME_RANGE = TimeRange.LAST_7_DAYS
+DEFAULT_PAGE_STATS_TIME_RANGE = TimeRange.LAST_30_DAYS
 
 T = TypeVar("T")
+
+
+class PageAnalyticsError(Exception):
+    def __init__(self, code: str, message: str):
+        self.code = code
+        self.message = message
+        super().__init__(message)
 
 
 class TimeRangeForm(forms.Form):
     range = forms.ChoiceField(
         choices=TimeRange.choices,
-        initial=DEFAULT_TIME_RANGE,
         required=False,
         label="Time range",
     )
 
+    def __init__(self, *args, default_time_range=DEFAULT_TIME_RANGE, **kwargs):
+        self.default_time_range = default_time_range
+        super().__init__(*args, **kwargs)
+        self.fields["range"].initial = default_time_range
+
     def clean_range(self):
-        return self.cleaned_data["range"] or DEFAULT_TIME_RANGE
+        return self.cleaned_data["range"] or self.default_time_range
 
 
 class TimeRangeRedirectForm(forms.Form):
@@ -109,7 +125,7 @@ def _call_umami(client: UmamiClient, callback: Callable[[UmamiClient], T]) -> T:
         return callback(client)
 
 
-def _get_time_range(time_range: str = DEFAULT_TIME_RANGE) -> tuple[int, int]:
+def _get_time_range_timestamps(time_range: str = DEFAULT_TIME_RANGE) -> tuple[int, int]:
     now = timezone.now().replace(microsecond=0)
 
     match time_range:
@@ -127,11 +143,15 @@ def _get_time_range(time_range: str = DEFAULT_TIME_RANGE) -> tuple[int, int]:
     return int(start.timestamp() * 1000), int(now.timestamp() * 1000)
 
 
-def _fetch_stats(start_at: int, end_at: int, website_id: str) -> Stats:
+def _fetch_stats(
+    start_at: int, end_at: int, website_id: str, path: str | None = None
+) -> Stats:
     with _get_client() as client:
         return _call_umami(
             client,
-            lambda client: client.stats(start_at, end_at, website_id=website_id),
+            lambda client: client.stats(
+                start_at, end_at, website_id=website_id, path=path
+            ),
         )
 
 
@@ -168,10 +188,31 @@ def get_stats(website_id: str, time_range: str = DEFAULT_TIME_RANGE) -> Stats:
     if cached is not None:
         return cached
 
-    start_at, end_at = _get_time_range(time_range)
+    start_at, end_at = _get_time_range_timestamps(time_range)
     stats = _fetch_stats(start_at, end_at, website_id)
     if stats:
         cache.set(cache_key, stats)
+    return stats
+
+
+def get_page_stats(website_id: str, path: str, time_range: str) -> Stats:
+    path_digest = hashlib.sha256(path.encode()).hexdigest()
+    cache_key = f"analytics:page_stats:{website_id}:{time_range}:{path_digest}"
+    cached = cache.get(cache_key)
+    if cached is not None:
+        return cached
+
+    start_at, end_at = _get_time_range_timestamps(time_range)
+    stats = _fetch_stats(start_at, end_at, website_id, path=path)
+    cache.set(
+        cache_key,
+        stats,
+        timeout=getattr(
+            settings,
+            "WAGTAIL_UMAMI_PAGE_STATS_CACHE_TIMEOUT",
+            PAGE_STATS_CACHE_TIMEOUT,
+        ),
+    )
     return stats
 
 
@@ -183,7 +224,7 @@ def get_metrics(
     if cached is not None:
         return cached
 
-    start_at, end_at = _get_time_range(time_range)
+    start_at, end_at = _get_time_range_timestamps(time_range)
 
     metrics = {"paths": [], "referrers": [], "countries": []}
     with ThreadPoolExecutor(max_workers=3) as executor:
@@ -208,6 +249,69 @@ def get_metrics(
 
 def _umami_unavailable_response() -> JsonResponse:
     return JsonResponse({"error": "Umami is unavailable"}, status=503)
+
+
+def _analytics_error_response(error: PageAnalyticsError) -> JsonResponse:
+    return JsonResponse(
+        {"error": error.code, "message": error.message},
+        status=400,
+    )
+
+
+def _umami_api_configured() -> bool:
+    if not getattr(settings, "UMAMI_API_BASE", None):
+        return False
+    if not getattr(settings, "UMAMI_API_KEY", None) and not (
+        getattr(settings, "UMAMI_USERNAME", None)
+        and getattr(settings, "UMAMI_PASSWORD", None)
+    ):
+        return False
+    return True
+
+
+def _get_time_range_from_request(
+    request, default_time_range: str = DEFAULT_TIME_RANGE
+) -> str | None:
+    form = TimeRangeForm(request.GET, default_time_range=default_time_range)
+    if form.is_valid():
+        return form.cleaned_data["range"]
+    return None
+
+
+def get_page_site_id_and_path(page: Page) -> tuple[int, str] | None:
+    url_parts = page.get_url_parts()
+    if url_parts is None:
+        return None
+
+    site_id, _root_url, page_path = url_parts
+    if site_id is None or page_path is None:
+        return None
+
+    return site_id, page_path
+
+
+def _get_page_analytics_config(page: Page) -> tuple[str, str]:
+    if not page.live:
+        raise PageAnalyticsError(
+            "not_live", _("Analytics are only available for published pages.")
+        )
+
+    page_site_and_path = get_page_site_id_and_path(page)
+    if page_site_and_path is None:
+        raise PageAnalyticsError(
+            "no_public_url",
+            _("Analytics are unavailable because this page has no public URL."),
+        )
+
+    site_id, page_path = page_site_and_path
+    site = Site.objects.get(pk=site_id)
+    analytics_settings = UmamiAnalyticsSetting.for_site(site)
+    if not _umami_api_configured() or not analytics_settings.umami_id:
+        raise PageAnalyticsError(
+            "not_configured", _("Analytics are not configured for this site.")
+        )
+
+    return analytics_settings.umami_id, page_path
 
 
 class AnalyticsSiteSwitchForm(SiteSwitchForm):
@@ -245,11 +349,7 @@ class AnalyticsSiteMixin:
 
 class TimeRangeMixin:
     def get_time_range(self):
-        form = TimeRangeForm(self.request.GET)
-        if form.is_valid():
-            return form.cleaned_data["range"]
-
-        return DEFAULT_TIME_RANGE
+        return _get_time_range_from_request(self.request) or DEFAULT_TIME_RANGE
 
     def get_time_range_form(self):
         selected_range = self.get_time_range()
@@ -287,12 +387,7 @@ class IndexView(
         ]
 
     def _umami_configured(self):
-        if not getattr(settings, "UMAMI_API_BASE", None):
-            return False
-        if not getattr(settings, "UMAMI_API_KEY", None) and not (
-            getattr(settings, "UMAMI_USERNAME", None)
-            and getattr(settings, "UMAMI_PASSWORD", None)
-        ):
+        if not _umami_api_configured():
             return False
         if not self.website_id:
             return False
@@ -358,6 +453,50 @@ class MetricsView(TimeRangeMixin, AnalyticsJsonView):
             for key, value in metrics.items()
         }
         return {"metrics": metrics_response}
+
+
+class PageAnalyticsStatsView(View):
+    error_message = "Failed to fetch page stats from Umami"
+
+    def get(self, request, page_id):
+        page = get_object_or_404(Page, pk=page_id).specific
+
+        if not page.permissions_for_user(request.user).can_edit():
+            return HttpResponseForbidden()
+
+        try:
+            time_range = _get_time_range_from_request(
+                request, DEFAULT_PAGE_STATS_TIME_RANGE
+            )
+            if time_range is None:
+                raise PageAnalyticsError(
+                    "invalid_time_range", _("Unsupported time range.")
+                )
+            website_id, page_path = _get_page_analytics_config(page)
+            stats = get_page_stats(website_id, page_path, time_range)
+        except PageAnalyticsError as e:
+            return _analytics_error_response(e)
+        except UmamiClientError:
+            logger.exception(self.error_message)
+            return _umami_unavailable_response()
+
+        return JsonResponse(
+            {
+                "path": page_path,
+                "range": time_range,
+                "stats": stats.to_dict(),
+            }
+        )
+
+
+def register_umami_page_analytics_urls():
+    return [
+        path(
+            "page-analytics/<int:page_id>/stats/",
+            PageAnalyticsStatsView.as_view(),
+            name="wagtail_umami_page_analytics_stats",
+        ),
+    ]
 
 
 class UmamiAnalyticsViewSet(ViewSet):

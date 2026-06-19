@@ -33,3 +33,39 @@ Adds a simple dashboard of Umami Analytics data into the Wagtail admin UI.
     
     {% umami_analytics_tracker %}
     ```
+
+## Page editor analytics panel
+
+You can add an opt-in analytics panel to Wagtail page editors. The panel shows
+page-level Umami stats for the live page over the last 30 days.
+
+Register the stats endpoint in `wagtail_hooks.py`:
+
+```python
+from wagtail import hooks
+
+from wagtail_umami_analytics.views import register_umami_page_analytics_urls
+
+
+hooks.register("register_admin_urls", register_umami_page_analytics_urls)
+```
+
+Add the panel to the page models that should show analytics:
+
+```python
+from wagtail.models import Page
+
+from wagtail_umami_analytics.panels import UmamiAnalyticsPanel
+
+
+class ContentPage(Page):
+    content_panels = Page.content_panels + [
+        UmamiAnalyticsPanel(),
+    ]
+```
+
+The page stats cache timeout defaults to 20 minutes. Override it with:
+
+```python
+WAGTAIL_UMAMI_PAGE_STATS_CACHE_TIMEOUT = 1200
+```

@@ -11,13 +11,24 @@ from wagtail_factories import SiteFactory
 
 from wagtail_umami_analytics.client import UmamiClient
 from wagtail_umami_analytics.models import UmamiAnalyticsSetting
-from wagtail_umami_analytics.views import UmamiAnalyticsViewSet
+from wagtail_umami_analytics.views import (
+    UmamiAnalyticsViewSet,
+    register_umami_page_analytics_urls,
+)
 
 
-@pytest.fixture(scope="session")
+@pytest.fixture(scope="session", autouse=True)
 def register_viewset():
     with hooks.register_temporarily(
         "register_admin_viewset", lambda: UmamiAnalyticsViewSet()
+    ):
+        yield
+
+
+@pytest.fixture(scope="session", autouse=True)
+def register_page_analytics_urls():
+    with hooks.register_temporarily(
+        "register_admin_urls", register_umami_page_analytics_urls
     ):
         yield
 

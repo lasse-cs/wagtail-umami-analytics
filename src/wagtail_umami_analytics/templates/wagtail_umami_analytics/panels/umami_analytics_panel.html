@@ -1,0 +1,36 @@
+{% load i18n %}
+
+{% if message %}
+    <p>{{ message }}</p>
+{% else %}
+    <p>{{ time_range_label }}</p>
+    <div
+        class="loading-mask"
+        data-controller="content-loader page-analytics-panel"
+        data-content-loader-url-value="{{ stats_url }}"
+        data-content-loader-loading-class="loading"
+        data-action="content-loader:loaded->page-analytics-panel#update content-loader:failed->page-analytics-panel#showError"
+    >
+        <p hidden data-page-analytics-panel-target="error">
+            {% trans "Analytics are currently unavailable." %}
+        </p>
+        <dl class="wagtail-umami-page-analytics" data-page-analytics-panel-target="stats">
+            <div class="wagtail-umami-page-analytics__metric">
+                <dt>{% trans "Page views" %}</dt>
+                <dd data-page-analytics-panel-target="pageviews">-</dd>
+            </div>
+            <div class="wagtail-umami-page-analytics__metric">
+                <dt>{% trans "Visitors" %}</dt>
+                <dd data-page-analytics-panel-target="visitors">-</dd>
+            </div>
+            <div class="wagtail-umami-page-analytics__metric">
+                <dt>{% trans "Visits" %}</dt>
+                <dd data-page-analytics-panel-target="visits">-</dd>
+            </div>
+            <div class="wagtail-umami-page-analytics__metric">
+                <dt>{% trans "Bounces" %}</dt>
+                <dd data-page-analytics-panel-target="bounces">-</dd>
+            </div>
+        </dl>
+    </div>
+{% endif %}

@@ -64,6 +64,40 @@ def test_stats(umami_api_client, umami_api_base, website_id):
 
 
 @responses.activate
+def test_stats_can_filter_by_path(umami_api_client, umami_api_base, website_id):
+    startAt = 200
+    endAt = 300
+    path = "/about/"
+    expected_response = {
+        "pageviews": 10,
+        "visitors": 10,
+        "visits": 10,
+        "bounces": 10,
+        "totaltime": 10,
+        "comparison": {
+            "pageviews": 0,
+            "visitors": 0,
+            "visits": 0,
+            "bounces": 0,
+            "totaltime": 0,
+        },
+    }
+    responses.get(
+        f"{umami_api_base}websites/{website_id}/stats",
+        json=expected_response,
+        match=[
+            responses.matchers.query_param_matcher(
+                {"startAt": str(startAt), "endAt": str(endAt), "path": path}
+            )
+        ],
+    )
+
+    stats = umami_api_client.stats(startAt, endAt, path=path)
+
+    assert stats.to_dict() == expected_response
+
+
+@responses.activate
 def test_stats_handles_errors(umami_api_client, umami_api_base, website_id):
     startAt = 200
     endAt = 300
