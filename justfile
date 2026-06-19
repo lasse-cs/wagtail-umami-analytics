@@ -6,6 +6,10 @@ default:
 test *args:
     uv run pytest {{args}}
 
+# Run tests against all versions
+tox *args:
+    uv run tox {{args}}
+
 # Run Ruff lint checks
 lint:
     uv run ruff check
