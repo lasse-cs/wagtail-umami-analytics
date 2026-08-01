@@ -23,6 +23,7 @@ Adds a simple dashboard of Umami Analytics data into the Wagtail admin UI.
     ```python
     from wagtail import hooks
 
+
     @hooks.register("register_admin_viewset")
     def register_umami_dashboard():
         return UmamiAnalyticsViewSet()

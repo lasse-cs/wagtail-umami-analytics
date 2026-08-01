@@ -11,15 +11,14 @@ register = template.Library()
 def umami_analytics_tracker(context):
     if "request" not in context:
         return ""
-    if getattr(context["request"], "is_preview", False):
+    request = context["request"]
+    if getattr(request, "is_preview", False):
         return ""
     if context.get("is_pattern_library", False):
         return ""
     try:
-        analytics_settings = UmamiAnalyticsSetting.for_request(
-            request=context["request"]
-        )
-    except Exception:
+        analytics_settings = UmamiAnalyticsSetting.for_request(request=request)
+    except UmamiAnalyticsSetting.DoesNotExist:
         return ""
     umami_host = getattr(settings, "UMAMI_HOST", None)
     if not umami_host or not analytics_settings.umami_id:

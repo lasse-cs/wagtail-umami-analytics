@@ -258,12 +258,11 @@ def _analytics_error_response(error: PageAnalyticsError) -> JsonResponse:
 def _umami_api_configured() -> bool:
     if not getattr(settings, "UMAMI_API_BASE", None):
         return False
-    if not getattr(settings, "UMAMI_API_KEY", None) and not (
-        getattr(settings, "UMAMI_USERNAME", None)
-        and getattr(settings, "UMAMI_PASSWORD", None)
-    ):
-        return False
-    return True
+    api_key = getattr(settings, "UMAMI_API_KEY", None)
+    username_password = getattr(settings, "UMAMI_USERNAME", None) and getattr(
+        settings, "UMAMI_PASSWORD", None
+    )
+    return bool(api_key or username_password)
 
 
 def _get_time_range_from_request(
@@ -386,9 +385,7 @@ class IndexView(
     def _umami_configured(self):
         if not _umami_api_configured():
             return False
-        if not self.website_id:
-            return False
-        return True
+        return bool(self.website_id)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
