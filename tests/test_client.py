@@ -1,14 +1,14 @@
-import responses
 import pytest
+import responses
 
 from wagtail_umami_analytics.client import (
     Metric,
     MetricType,
     UmamiAPIError,
     UmamiClient,
+    UmamiClientError,
+    UmamiConfigurationError,
 )
-from wagtail_umami_analytics.client import UmamiClientError
-from wagtail_umami_analytics.client import UmamiConfigurationError
 
 
 @responses.activate

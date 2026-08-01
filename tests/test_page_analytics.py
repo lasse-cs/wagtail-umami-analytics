@@ -1,19 +1,17 @@
 from datetime import datetime, timedelta, timezone
 
+import pytest
+import responses
 from django.contrib.auth.models import Permission
 from django.core.cache import cache
 from django.test import RequestFactory
 from django.urls import reverse
-
-import pytest
-import responses
 from wagtail.models import Page, Site
 from wagtail_factories import PageFactory
 
 from wagtail_umami_analytics.panels import UmamiAnalyticsPanel
 
 from .factories import UmamiAnalyticsSettingFactory
-
 
 pytestmark = [
     pytest.mark.django_db,

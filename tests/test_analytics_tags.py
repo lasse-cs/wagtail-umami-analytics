@@ -6,7 +6,6 @@ from wagtail_umami_analytics.templatetags.umami_analytics_tags import (
 
 from .factories import UmamiAnalyticsSettingFactory
 
-
 pytestmark = [
     pytest.mark.django_db,
     pytest.mark.usefixtures("register_viewset", "register_setting"),

@@ -1,4 +1,4 @@
-from .base import *  # noqa: F403
+from .base import *
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -13,6 +13,6 @@ EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 
 try:
-    from .local import *  # noqa: F403
+    from .local import *
 except ImportError:
     pass

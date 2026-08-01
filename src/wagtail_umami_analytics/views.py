@@ -1,21 +1,19 @@
+import hashlib
+import logging
 from collections.abc import Callable
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import timedelta
-import hashlib
-import logging
 from typing import TypeVar
 
-from django.conf import settings
 from django import forms
+from django.conf import settings
 from django.core.cache import cache
 from django.db import models
-from django.http import Http404
-from django.http import HttpResponseForbidden
-from django.http import JsonResponse
+from django.http import Http404, HttpResponseForbidden, JsonResponse
 from django.shortcuts import get_object_or_404
 from django.urls import path, reverse, reverse_lazy
-from django.utils.translation import gettext as _
 from django.utils import timezone
+from django.utils.translation import gettext as _
 from django.views.generic import TemplateView, View
 from wagtail.admin.views.generic import WagtailAdminTemplateMixin
 from wagtail.admin.viewsets.base import ViewSet
@@ -31,7 +29,6 @@ from wagtail_umami_analytics.client import (
     UmamiClientError,
 )
 from wagtail_umami_analytics.models import UmamiAnalyticsSetting
-
 
 logger = logging.getLogger(__name__)
 

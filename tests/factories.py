@@ -1,6 +1,5 @@
 import factory
 from factory.django import DjangoModelFactory
-
 from wagtail_factories import SiteFactory
 
 from wagtail_umami_analytics.models import UmamiAnalyticsSetting

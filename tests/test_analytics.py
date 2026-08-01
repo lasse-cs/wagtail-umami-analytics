@@ -1,20 +1,16 @@
-import pytest
-
 from datetime import datetime, timedelta, timezone
 
-from pytest_django.asserts import assertTemplateUsed
-
+import pytest
 import responses
-
 from django.core.cache import cache
 from django.urls import reverse
-
+from pytest_django.asserts import assertTemplateUsed
 from wagtail.models import Site
 from wagtail_factories import SiteFactory
+
 from wagtail_umami_analytics.views import UMAMI_TOKEN_CACHE_KEY
 
 from .factories import UmamiAnalyticsSettingFactory
-
 
 pytestmark = [
     pytest.mark.django_db,
